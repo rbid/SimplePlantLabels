@@ -15,9 +15,9 @@ include <Round-Anything/polyround.scad>
  *
  *
  * From command line you can run:
- *     openscad -o "basil_label.stl" simple_plant_label.scad -D "label_text=\"Basil\""
+ *     openscad -o "basil_label.stl" SimplePlantLabel.scad -D "label_text=\"Basil\""
  * or
- *     openscad -o "basil_label_heb.stl" simple_plant_label.scad -D "label_text=\"בסיליקום\"" -D "label_direction=\"rtl\""
+ *     openscad -o "basil_label_heb.stl" SimplePlantLabel.scad -D "label_text=\"בסיליקום\"" -D "label_direction=\"rtl\""
  */    
 
 /*
@@ -27,7 +27,7 @@ include <Round-Anything/polyround.scad>
 label_font = "DejaVu Sans Condensed:style=Bold";
 label_text = "Locoto Rojo";
 label_direction = "ltr";  // "rtl" for Hebrew.
-label_thickness = 5;
+label_thickness = 5.4;
 label_text_size = 7;
 
 
@@ -42,10 +42,10 @@ text_offset_x = 4;
  * Stick settings
  */
 stick_length = 170;
-stick_thickness = 4;
+stick_thickness = 4.2;
 stick_tip_length = 16;
-stick_tip_size = 1.5;
-stick_width = 4;
+//stick_tip_size = 2;
+stick_width = 4.2;
 
 /**
  * Create extruded text
@@ -57,7 +57,7 @@ module extrude_text(label, font, size, height, direction) {
       font = font,
       size = size,
       direction = direction,
-      spacing = 1,
+      spacing = 0.96,
       halign = "right",
       valign = "center",
       $fn = 25
@@ -70,11 +70,13 @@ module extrude_text(label, font, size, height, direction) {
  */
 module stick() {
     polyRoundExtrude([
-      [0, 0, 1],
-      [stick_length, 0, 2],
-      [stick_length, stick_width, 2],
-      [stick_tip_length, stick_width, 0],
-      [0, stick_tip_size, 1]], stick_thickness, 1, 0, fn=50);
+      [0, stick_width/3, stick_width/3],
+      [stick_tip_length, 0, stick_width/20],
+      [stick_length, 0, stick_width/2],
+      [stick_length, stick_width, stick_width/2],
+      [stick_tip_length, stick_width, stick_width/2],
+      [0, 2*stick_width/3, stick_width/3]], 
+      stick_thickness, 1, 0, fn=50);
 }
 
 

@@ -10,17 +10,43 @@ import sys
 # Constants
 #
 VERBOSE_MODE = True
-VERSION_SCRIPT = '1.0 (27/May/2023 by Ricky.Marek)'
+VERSION = '1.0 (27/May/2023 by Ricky.Marek)'
 SCRIPT = sys.argv[0]
 OPENSCAD_COMMAND = "openscad"
-SCAD_SCRIPT = "simple_plant_label.scad"
-STL_SUBDIR = "stl_files"
+SCAD_SCRIPT = "SimplePlantLabels.scad"
+STL_SUBDIR = "Output"
 XLSX_FILE = "labels_list.xlsx"
 
+usage_string = f"""
+    python SimplePlantLabels.py.py [-h][-v][-o <STL_SUBDIR>][-s <SCAD_SCRIPT>][-x <XLSX_FILE>
+       -h                Will print this help message.
+       -v                Turn on verbose mode.
+       -o STL_SUBDIR     Create the STL files inside the <STL_SUBDIR> directory.
+       -s SCAD_SCRIPT    Use a different <SCAD_SCRIPT> for creating the STL files.
+       -x XLSX_FILE      Excel file with the labels list to create.
+
+    The Excel file has the following columns:
+    - NAME: Name of the variety or plant.
+    - CODE: A unique code you may give.
+    - FILENAME: The name for the lable, usually composed from the CODE.
+    - DIRECTION: "rtl" or "ltr" as text direction (English vs Hebrew)
+    
+    The default values are:
+    - SCAD_SCRIPT={SCAD_SCRIPT}
+    - STL_SUBDIR={STL_SUBDIR}
+    - XLSX_FILE={XLSX_FILE}
+    - OPENSCAD={OPENSCAD_COMMAND}
+
+    The script opens the Excel file and loops on all rows, by calling openscad with:
+       openscad <SCAD_SCRIPT> -o <STL_SUBDIR>/<FILENAME> -D 'label_text="<NAME>"' -D 'label_direction="<DIRECTION>"'
+
+    {SCRIPT} {VERSION}
+"""
 
 def get_args():
     parser = argparse.ArgumentParser(description='Wrapper for running openscad to generate stl files per label',
-                                     formatter_class=argparse.RawTextHelpFormatter)
+                                     formatter_class=argparse.RawTextHelpFormatter, usage=usage_string)
+
     parser.add_argument('-v', '--verbose', dest='VERBOSE_MODE', action='store_true', default=VERBOSE_MODE,
                         help='Turn on verbose mode on')
     parser.add_argument('-s', '--script', dest='SCAD_SCRIPT', action='store', help='openscad script to use')
@@ -46,7 +72,7 @@ if __name__ == '__main__':
 
     xlsx_file = XLSX_FILE
     if args ['XLSX_FILE'] is not None:
-        xls_file = args['XLS_FILE']
+        xlsx_file = args['XLSX_FILE']
 
     if not os.path.isfile(xlsx_file):
         print(f"{SCRIPT}[ERROR]: Missing Excel file. File {xlsx_file} does not exist.")
@@ -66,7 +92,7 @@ if __name__ == '__main__':
         print(f"{SCRIPT}: stl_subdir:.... {stl_subdir}")
         print(f"{SCRIPT}: xlsx_file:..... {xlsx_file}")
 
-    df = pd.read_excel(xlsx_file)
+    df = pd.read_excel(xlsx_file, engine='openpyxl')
     for i, row in df.iterrows():
         file_name  = f"{stl_subdir}/{row['FILENAME']}"
         if not os.path.exists(file_name):
