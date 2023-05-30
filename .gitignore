@@ -1,0 +1,4 @@
+#
+# Ignore STL files
+*.stl
+stl_files
