@@ -1,4 +1,9 @@
-#
-# Ignore STL files
+# Ignore
+stl_files/
 *.stl
-stl_files
+
+# Allow
+examples/Label-7PD-ZS.stl
+examples/Label-APO-RB.stl
+examples/Label-APU-RB.stl
+examples/Label-BAS-HE.stl
