@@ -13,12 +13,12 @@ VERBOSE_MODE = True
 VERSION = '1.0 (27/May/2023 by Ricky.Marek)'
 SCRIPT = sys.argv[0]
 OPENSCAD_COMMAND = "openscad"
-SCAD_SCRIPT = "SimplePlantLabels.scad"
-STL_SUBDIR = "Output"
-XLSX_FILE = "labels_list.xlsx"
+SCAD_SCRIPT = "simple_plant_label.scad"
+STL_SUBDIR = "output"
+XLSX_FILE = "labels.xlsx"
 
 usage_string = f"""
-    python SimplePlantLabels.py.py [-h][-v][-o <STL_SUBDIR>][-s <SCAD_SCRIPT>][-x <XLSX_FILE>
+    python3 {SCRIPT} [-h][-v][-o <STL_SUBDIR>][-s <SCAD_SCRIPT>][-x <XLSX_FILE>
        -h                Will print this help message.
        -v                Turn on verbose mode.
        -o STL_SUBDIR     Create the STL files inside the <STL_SUBDIR> directory.
@@ -32,10 +32,10 @@ usage_string = f"""
     - DIRECTION: "rtl" or "ltr" as text direction (English vs Hebrew)
     
     The default values are:
-    - SCAD_SCRIPT={SCAD_SCRIPT}
-    - STL_SUBDIR={STL_SUBDIR}
-    - XLSX_FILE={XLSX_FILE}
-    - OPENSCAD={OPENSCAD_COMMAND}
+    - SCAD_SCRIPT....{SCAD_SCRIPT}
+    - STL_SUBDIR.....{STL_SUBDIR}
+    - XLSX_FILE......{XLSX_FILE}
+    - OPENSCAD.......{OPENSCAD_COMMAND}
 
     The script opens the Excel file and loops on all rows, by calling openscad with:
        openscad <SCAD_SCRIPT> -o <STL_SUBDIR>/<FILENAME> -D 'label_text="<NAME>"' -D 'label_direction="<DIRECTION>"'
@@ -50,7 +50,7 @@ def get_args():
     parser.add_argument('-v', '--verbose', dest='VERBOSE_MODE', action='store_true', default=VERBOSE_MODE,
                         help='Turn on verbose mode on')
     parser.add_argument('-s', '--script', dest='SCAD_SCRIPT', action='store', help='openscad script to use')
-    parser.add_argument('-d', '--directory', dest='STL_SUBDIR', action='store',
+    parser.add_argument('-o', '--output', dest='STL_SUBDIR', action='store',
                         help='Output directory for the stl files')
     parser.add_argument('-x', '--xlsx_file', dest='XLSX_FILE', action='store', help='Excel file with the tags list')
 

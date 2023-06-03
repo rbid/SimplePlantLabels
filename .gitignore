@@ -1,9 +1,10 @@
 # Ignore
 stl_files/
+output/
 *.stl
 
 # Allow
-examples/Label-7PD-ZS.stl
-examples/Label-APO-RB.stl
-examples/Label-APU-RB.stl
-examples/Label-BAS-HE.stl
+!examples/Label-7PD-ZS.stl
+!examples/Label-APO-RB.stl
+!examples/Label-APU-RB.stl
+!examples/Label-BAS-HE.stl
